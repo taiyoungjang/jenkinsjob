@@ -1,0 +1,10 @@
+﻿###
+POST https://localhost:7222/
+Content-Type: application/json
+
+{
+            "type":"request_modal",
+            "value":"Bot 메시지의 버튼에 설정한 value 값",
+            "action_time":123,
+            "message":"카카오워크 서버에서 관리하는 메시지 정보"
+}
