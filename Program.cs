@@ -1,5 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -36,8 +38,15 @@ string List()
 {
     using HttpRequestMessage requestMessage = new HttpRequestMessage();
     requestMessage.Method = HttpMethod.Post;
-    requestMessage.RequestUri = new Uri($"{jenkinsUrl}/api/json/json?tree=jobs[name,buildable,jobs[name,buildable,jobs[name,buildable]]]&pretty");
+    requestMessage.RequestUri = new Uri($"{jenkinsUrl}/api/json?tree=jobs[name,buildable,jobs[name,buildable,jobs[name,buildable]]]&pretty");
     using var response =  httpClient.Send(requestMessage);
-    var result = response.Content.ReadAsStringAsync().Result;
-    return result;
+    var jsonNodes = JsonNode.Parse(response.Content.ReadAsStringAsync().Result);
+    List<string> jobs = new();
+    foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
+    {
+        jobs.Add( job!["name"]!.ToString() );
+    }
+
+    var ret = JsonSerializer.Serialize( new { jobs });
+    return ret;
 }
