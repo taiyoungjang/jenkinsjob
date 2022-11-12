@@ -74,10 +74,13 @@ IResult List()
     using var response =  httpClient.Send(requestMessage);
     var jsonNodes = JsonNode.Parse(response.Content.ReadAsStringAsync().Result);
     List<string> jobs = new();
+    StringBuilder sb = new StringBuilder();
     foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
     {
-        jobs.Add( job!["name"]!.ToString() );
+        string name = job!["name"]!.ToString();
+        jobs.Add( name );
+        sb.Append($"<li><a href=\"/build/{name}\">{name}</a></li>");
     }
-
-    return Results.Json(jobs);
+    string html = $"<html><head></head><body>{sb}</body></html>";
+    return Results.Content(html, "text/html");
 }
