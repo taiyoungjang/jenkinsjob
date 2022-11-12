@@ -1,2 +1,2 @@
 ﻿###
-GET https://localhost:7222/listjob
+GET http://localhost:5173/listjob

@@ -1,5 +1,5 @@
 ﻿###
-POST https://localhost:7222/
+POST http://localhost:5173/
 Content-Type: application/json
 
 {

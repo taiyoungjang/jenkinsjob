@@ -1,2 +1,2 @@
 ﻿###
-GET https://localhost:7222/build/System_BinariesUpdate_ProjectDSPilot_TableGen
+GET http://localhost:5173/build/System_BinariesUpdate_ProjectDSPilot_TableGen
