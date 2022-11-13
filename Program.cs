@@ -86,6 +86,10 @@ IResult List()
         sb.Append($"<div><ul><li><a href=\"/build/{name}\">{name}</a></li></ul></div>");
     }
 
-    string html = $"<html><head></head><body>{sb}</body></html>";
-    return Results.Content(html, "text/html");
+    StringBuilder html = new StringBuilder();
+    html.Append("<!DOCTYPE HTML>");
+    html.Append("<html><head></head><body>");
+    html.Append(sb);
+    html.Append("</body></html>");
+    return Results.Content(html.ToString(), "text/html");
 }
