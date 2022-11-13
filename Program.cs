@@ -107,7 +107,7 @@ IResult List()
     html.AppendLine("<style>");
     html.AppendLine("</head>");
     html.AppendLine("<body>");
-    html.AppendLine(sb);
+    html.AppendLine(sb.ToString());
     html.AppendLine("</body></html>");
     return Results.Content(html.ToString(), "text/html");
 }
