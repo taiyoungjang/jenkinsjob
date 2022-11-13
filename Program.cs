@@ -79,35 +79,35 @@ IResult List()
     var jsonNodes = JsonNode.Parse(response.Content.ReadAsStringAsync().Result);
     List<string> jobs = new();
     StringBuilder sb = new StringBuilder();
-    sb.Append($"<div>");
+    sb.AppendLine($"<div>");
     foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
-        sb.Append($"<button type=\"button\" onclick=\"location.href='/build/{name}\">{name}</button>");
+        sb.AppendLine($"<button type=\"button\" onclick=\"location.href='/build/{name}\">{name}</button>");
     }
-    sb.Append($"</div>");
+    sb.AppendLine($"</div>");
 
     StringBuilder html = new StringBuilder();
-    html.Append("<!doctype html>");
-    html.Append("<html>");
-    html.Append("<head>");
-    html.Append("<style>");
-    html.Append("    .button {");
-    html.Append("  background-color: #04AA6D;");
-    html.Append("  border: none;");
-    html.Append("  color: white;");
-    html.Append("  padding: 20px;");
-    html.Append("  text-align: center;");
-    html.Append("  text-decoration: none;");
-    html.Append("  display: inline-block;");
-    html.Append("  font-size: 16px;");
-    html.Append("  margin: 4px 2px;");
-    html.Append(" }");
-    html.Append("<style>");
-    html.Append("</head>");
-    html.Append("<body>");
-    html.Append(sb);
-    html.Append("</body></html>");
+    html.AppendLine("<!doctype html>");
+    html.AppendLine("<html>");
+    html.AppendLine("<head>");
+    html.AppendLine("<style>");
+    html.AppendLine("    .button {");
+    html.AppendLine("  background-color: #04AA6D;");
+    html.AppendLine("  border: none;");
+    html.AppendLine("  color: white;");
+    html.AppendLine("  padding: 20px;");
+    html.AppendLine("  text-align: center;");
+    html.AppendLine("  text-decoration: none;");
+    html.AppendLine("  display: inline-block;");
+    html.AppendLine("  font-size: 16px;");
+    html.AppendLine("  margin: 4px 2px;");
+    html.AppendLine(" }");
+    html.AppendLine("<style>");
+    html.AppendLine("</head>");
+    html.AppendLine("<body>");
+    html.AppendLine(sb);
+    html.AppendLine("</body></html>");
     return Results.Content(html.ToString(), "text/html");
 }
