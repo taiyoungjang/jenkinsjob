@@ -93,7 +93,7 @@ IResult List()
     html.AppendLine("<html>");
     html.AppendLine("<head>");
     html.AppendLine("<style>");
-    html.AppendLine("  .div {");
+    html.AppendLine("  .button {");
     html.AppendLine("background-color: #04AA6D;");
     html.AppendLine("border: none;");
     html.AppendLine("color: white;");
