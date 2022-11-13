@@ -79,23 +79,30 @@ IResult List()
     var jsonNodes = JsonNode.Parse(response.Content.ReadAsStringAsync().Result);
     List<string> jobs = new();
     StringBuilder sb = new StringBuilder();
-    sb.Append($"<table>");
+    sb.Append($"<div>");
     foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
-        sb.Append($"<tr><td><a href=\"/build/{name}\">{name}</a></td></tr>");
+        sb.Append($"<button type=\"button\" onclick=\"location.href='/build/{name}\">{name}</button>");
     }
-    sb.Append($"</table>");
+    sb.Append($"</div>");
 
     StringBuilder html = new StringBuilder();
     html.Append("<!doctype html>");
     html.Append("<html>");
     html.Append("<head>");
     html.Append("<style>");
-    html.Append("th, td {");
-    html.Append("border: 1px solid black;");
-    html.Append("border-radius: 10px;");
+    html.Append("    .button {");
+    html.Append("  background-color: #04AA6D;");
+    html.Append("  border: none;");
+    html.Append("  color: white;");
+    html.Append("  padding: 20px;");
+    html.Append("  text-align: center;");
+    html.Append("  text-decoration: none;");
+    html.Append("  display: inline-block;");
+    html.Append("  font-size: 16px;");
+    html.Append("  margin: 4px 2px;");
     html.Append(" }");
     html.Append("<style>");
     html.Append("</head>");
