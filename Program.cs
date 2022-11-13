@@ -79,14 +79,14 @@ IResult List()
     var jsonNodes = JsonNode.Parse(response.Content.ReadAsStringAsync().Result);
     List<string> jobs = new();
     StringBuilder sb = new StringBuilder();
-    sb.AppendLine($"<div>");
     foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
+        sb.AppendLine($"<div>");
         sb.AppendLine($"<button type=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
+        sb.AppendLine($"</div>");
     }
-    sb.AppendLine($"</div>");
 
     StringBuilder html = new StringBuilder();
     html.AppendLine("<!doctype html>");
