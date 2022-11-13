@@ -84,7 +84,7 @@ IResult List()
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
-        sb.AppendLine($"<button type=\"button\" onclick=\"location.href='/build/{name}\">{name}</button>");
+        sb.AppendLine($"<button type=\"button\" onclick=\"location.href='/build/{name}';\">{name}</button>");
     }
     sb.AppendLine($"</div>");
 
