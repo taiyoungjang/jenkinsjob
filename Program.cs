@@ -103,7 +103,7 @@ IResult List()
     html.AppendLine("display: inline-block;");
     html.AppendLine("font-size: 16px;");
     html.AppendLine("margin: 4px 2px;");
-    html.AppendLine('}');
+    html.AppendLine("}");
     html.AppendLine("<style>");
     html.AppendLine("</head>");
     html.AppendLine("<body>");
