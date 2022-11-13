@@ -84,7 +84,7 @@ IResult List()
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
-        sb.AppendLine($"<button type=\"button\" onclick=\"location.href='/build/{name}';\">{name}</button>");
+        sb.AppendLine($"<button type=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
     }
     sb.AppendLine($"</div>");
 
@@ -93,17 +93,17 @@ IResult List()
     html.AppendLine("<html>");
     html.AppendLine("<head>");
     html.AppendLine("<style>");
-    html.AppendLine("    .button {");
-    html.AppendLine("  background-color: #04AA6D;");
-    html.AppendLine("  border: none;");
-    html.AppendLine("  color: white;");
-    html.AppendLine("  padding: 20px;");
-    html.AppendLine("  text-align: center;");
-    html.AppendLine("  text-decoration: none;");
-    html.AppendLine("  display: inline-block;");
-    html.AppendLine("  font-size: 16px;");
-    html.AppendLine("  margin: 4px 2px;");
-    html.AppendLine(" }");
+    html.AppendLine("  .button {");
+    html.AppendLine("background-color: #04AA6D;");
+    html.AppendLine("border: none;");
+    html.AppendLine("color: white;");
+    html.AppendLine("padding: 20px;");
+    html.AppendLine("text-align: center;");
+    html.AppendLine("text-decoration: none;");
+    html.AppendLine("display: inline-block;");
+    html.AppendLine("font-size: 16px;");
+    html.AppendLine("margin: 4px 2px;");
+    html.AppendLine('}');
     html.AppendLine("<style>");
     html.AppendLine("</head>");
     html.AppendLine("<body>");
