@@ -79,16 +79,27 @@ IResult List()
     var jsonNodes = JsonNode.Parse(response.Content.ReadAsStringAsync().Result);
     List<string> jobs = new();
     StringBuilder sb = new StringBuilder();
+    sb.Append($"<table>");
     foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
-        sb.Append($"<div><ul><li><a href=\"/build/{name}\">{name}</a></li></ul></div>");
+        sb.Append($"<tr><td><a href=\"/build/{name}\">{name}</a></td></tr>");
     }
+    sb.Append($"</table>");
 
     StringBuilder html = new StringBuilder();
-    html.Append("<!DOCTYPE HTML>");
-    html.Append("<html><head></head><body>");
+    html.Append("<!doctype html>");
+    html.Append("<html>");
+    html.Append("<head>");
+    html.Append("<style>");
+    html.Append("th, td {");
+    html.Append("border: 1px solid black;");
+    html.Append("border-radius: 10px;");
+    html.Append(" }");
+    html.Append("<style>");
+    html.Append("</head>");
+    html.Append("<body>");
     html.Append(sb);
     html.Append("</body></html>");
     return Results.Content(html.ToString(), "text/html");
