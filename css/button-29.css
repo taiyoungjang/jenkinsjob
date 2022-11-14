@@ -9,9 +9,8 @@
   color: #fff;
   cursor: pointer;
   display: inline-flex;
-  font-family: "JetBrains Mono",monospace;
   height: 48px;
-  justify-content: center;
+  justify-content: left;
   line-height: 1;
   list-style: none;
   overflow: hidden;
@@ -26,7 +25,8 @@
   touch-action: manipulation;
   white-space: nowrap;
   will-change: box-shadow,transform;
-  font-size: 18px;
+  font-size: 12px;
+  width: 300px;
 }
 
 .button-29:focus {
