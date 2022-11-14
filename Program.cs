@@ -19,7 +19,7 @@ httpClient.DefaultRequestHeaders.Authorization = header;
 string buttonName = "button-29";
 var css = System.IO.File.ReadAllText($"css/{buttonName}.css");
 
-app.MapGet("/build/{job}", Build);
+app.MapGet("/build", Build);
 app.MapGet("/listjob", List);
 // app.MapPost("/request_modal", RequestModal);
 // app.MapPost("/submission", Submission);
@@ -66,13 +66,21 @@ IResult Submission(SubmissionDto dto)
     return Results.Json(dto.message);
 }
 
-IResult Build(string job)
+IResult Build(HttpRequest request)
 {
+    var job = request.Query["job"].ToString();
     if (string.IsNullOrEmpty(job))
     {
-        return Results.Json(new { message = "invalid job" });
+        return Results.NotFound();
     }
-
+    {
+        var key = request.Query["key"].ToString();
+        if (key != requestKey)
+        {
+            return Results.NotFound();
+        }
+    }
+    
     using HttpRequestMessage requestMessage = new HttpRequestMessage();
     requestMessage.Method = HttpMethod.Post;
     requestMessage.RequestUri = new Uri($"{jenkinsUrl}/job/{job}/build");
@@ -100,10 +108,10 @@ IResult List(HttpRequest request)
     StringBuilder sb = new StringBuilder();
     foreach (JsonObject job in jsonNodes!["jobs"]!.AsArray())
     {
-        string name = job!["name"]!.ToString();
-        jobs.Add(name);
+        string jobName = job!["name"]!.ToString();
+        jobs.Add(jobName);
         sb.AppendLine($"<div><p>");
-        sb.AppendLine($"<button class=\"{buttonName}\" role=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
+        sb.AppendLine($"<button class=\"{buttonName}\" role=\"button\" onclick=\"location.href='/build?job={jobName}&key={requestKey}'\">{jobName}</button>");
         sb.AppendLine($"</p></div>");
     }
 
