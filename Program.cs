@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Nodes;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -8,6 +9,7 @@ var app = builder.Build();
 var jenkinsUrl = builder.Configuration.GetValue<string>("jenkins:url");
 var jenkinsUser = builder.Configuration.GetValue<string>("jenkins:user");
 var jenkinsToken = builder.Configuration.GetValue<string>("jenkins:token");
+var requestKey = builder.Configuration.GetValue<string>("jenkins:request_key");
 
 HttpClient httpClient = new();
 var credentials = Encoding.ASCII.GetBytes($"{jenkinsUser}:{jenkinsToken}");
@@ -19,9 +21,16 @@ var css = System.IO.File.ReadAllText($"css/{buttonName}.css");
 
 app.MapGet("/build/{job}", Build);
 app.MapGet("/listjob", List);
-app.MapPost("/request_modal", RequestModal);
-app.MapPost("/submission", Submission);
-app.MapPost("/", PostJson);
+// app.MapPost("/request_modal", RequestModal);
+// app.MapPost("/submission", Submission);
+app.MapGet("/",  List);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "css")),
+    RequestPath = "/css"
+});
 
 app.Run();
 
@@ -72,8 +81,15 @@ IResult Build(string job)
     return Results.Json(statusCode);
 }
 
-IResult List()
+IResult List(HttpRequest request)
 {
+    {
+        var key = request.Query["key"].ToString();
+        if (key != requestKey)
+        {
+            return Results.NotFound();
+        }
+    }
     using HttpRequestMessage requestMessage = new HttpRequestMessage();
     requestMessage.Method = HttpMethod.Post;
     requestMessage.RequestUri =
@@ -86,18 +102,17 @@ IResult List()
     {
         string name = job!["name"]!.ToString();
         jobs.Add(name);
-        sb.AppendLine($"<div>");
-        sb.AppendLine($"<button class=\"{buttonName}\" role=\"button\" type=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
-        sb.AppendLine($"</div>");
+        sb.AppendLine($"<div><p>");
+        sb.AppendLine($"<button class=\"{buttonName}\" role=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
+        sb.AppendLine($"</p></div>");
     }
 
-    StringBuilder html = new StringBuilder();
+    var html = new StringBuilder();
     html.AppendLine("<!doctype html>");
     html.AppendLine("<html>");
+    html.AppendLine("<meta http-equiv=\"Cache-Control\" content=\"no-cache, no-store, must-revalidate\">");
     html.AppendLine("<head>");
-    html.AppendLine("<style>");
-    html.AppendLine(css);
-    html.AppendLine("</style>");
+    html.AppendLine($"<link href=\"/css/{buttonName}.css\" rel=\"stylesheet\" type=\"text/css\" />");
     html.AppendLine("</head>");
     html.AppendLine("<body>");
     html.AppendLine(sb.ToString());
