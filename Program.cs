@@ -14,6 +14,9 @@ var credentials = Encoding.ASCII.GetBytes($"{jenkinsUser}:{jenkinsToken}");
 AuthenticationHeaderValue header = new("Basic", Convert.ToBase64String(credentials));
 httpClient.DefaultRequestHeaders.Authorization = header;
 
+string buttonName = "button-29";
+var css = System.IO.File.ReadAllText($"css/{buttonName}.css");
+
 app.MapGet("/build/{job}", Build);
 app.MapGet("/listjob", List);
 app.MapPost("/request_modal", RequestModal);
@@ -84,7 +87,7 @@ IResult List()
         string name = job!["name"]!.ToString();
         jobs.Add(name);
         sb.AppendLine($"<div>");
-        sb.AppendLine($"<button class=\"button\" type=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
+        sb.AppendLine($"<button class=\"{buttonName}\" role=\"button\" type=\"button\" onclick=\"location.href='/build/{name}'\">{name}</button>");
         sb.AppendLine($"</div>");
     }
 
@@ -93,18 +96,7 @@ IResult List()
     html.AppendLine("<html>");
     html.AppendLine("<head>");
     html.AppendLine("<style>");
-    html.AppendLine("  .button {");
-    html.AppendLine("background-color: #04AA6D;");
-    html.AppendLine("border: none;");
-    html.AppendLine("color: white;");
-    html.AppendLine("padding: 10px;");
-    html.AppendLine("text-align: center;");
-    html.AppendLine("text-decoration: none;");
-    html.AppendLine("display: inline-block;");
-    html.AppendLine("font-size: 10px;");
-    html.AppendLine("margin: 4px 2px;");
-    html.AppendLine("border-radius: 12px;");
-    html.AppendLine("}");
+    html.AppendLine(css);
     html.AppendLine("</style>");
     html.AppendLine("</head>");
     html.AppendLine("<body>");
